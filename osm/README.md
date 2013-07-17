@@ -17,3 +17,10 @@ Perform the following tasks to setup a VM or Sandbox:
 
 5.  Setup the db, gems and run tests for openstreetmap-website:
     ssh vm_osm_osm OSM_PWD=<osm_db_user_pwd> bash -s < osm_post_site_setup.sh 
+
+6.  For setting up cgimap (for faster map api calls):
+    ssh vm_osm_osm bash -s < osm_cgimap.sh
+    
+    You will then need to configure lighttpd, etc  
+    See the following github repo for more:
+    https://github.com/zerebubuth/openstreetmap-cgimap
