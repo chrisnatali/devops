@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # add .pgpass pwd file to eliminate password prompt for next user
-sudo -u tiles -i
+sudo -u next -i
 echo "*:*:*:next:next" >> .pgpass
 chmod 600 .pgpass
 exit
@@ -19,10 +19,7 @@ psql -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgi
 psql -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql
 
 # create databases
-psql -c "CREATE DATABASE gis_pln OWNER tiles TEMPLATE=template_postgis;" 
-psql -c "CREATE DATABASE gis_np OWNER tiles TEMPLATE=template_postgis;" 
+psql -c "CREATE DATABASE next OWNER next TEMPLATE=template_postgis;" 
 
-psql -d gis_pln -c "ALTER TABLE geometry_columns OWNER TO tiles;" 
-psql -d gis_pln -c "ALTER TABLE spatial_ref_sys OWNER TO tiles;" 
-psql -d gis_np -c "ALTER TABLE geometry_columns OWNER TO tiles;" 
-psql -d gis_np -c "ALTER TABLE spatial_ref_sys OWNER TO tiles;" 
+psql -d next -c "ALTER TABLE geometry_columns OWNER TO next;" 
+psql -d next -c "ALTER TABLE spatial_ref_sys OWNER TO next;" 
