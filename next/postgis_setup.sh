@@ -14,12 +14,12 @@ psql -c "CREATE ROLE next SUPERUSER LOGIN PASSWORD 'next';"
 # setup postgis template db
 createdb -E UTF8 template_postgis
 createlang plpgsql template_postgis
-psql -d template_postgis -c "CREATE EXTENSION hstore;"
-psql -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql
-psql -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql
+psql -d template_postgis -c "CREATE EXTENSION postgis;"
 
 # create databases
 psql -c "CREATE DATABASE next OWNER next TEMPLATE=template_postgis;" 
 
+# these columns could belong to next
 psql -d next -c "ALTER TABLE geometry_columns OWNER TO next;" 
 psql -d next -c "ALTER TABLE spatial_ref_sys OWNER TO next;" 
+psql -d next -c "ALTER TABLE geography_columns OWNER TO next;" 

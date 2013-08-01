@@ -1,23 +1,48 @@
 #!/bin/bash
 
 # setup requirements for next
-sudo apt-get -y install git python-pip python-dev python-pastescript python-setuptools postgresql-server-dev-9.1 postgresql-9.1-postgis postgresql-contrib r-base
+# ONLY VALID FOR ubuntu 13.04 for now
+# add ubuntugis repo for postgis2
+sudo apt-get install -y software-properties-common # for add-apt-repository
+sudo add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable
+# replace the distro
+find /etc/apt/sources.list.d -type f | xargs sudo sed -i '/ubuntugis/s/raring/quantal/g'
+
+sudo apt-get update
+
+sudo apt-get -y install git python-pip python-dev python-virtualenv postgresql-server-dev-9.1 postgresql-contrib r-base libgdal1h libgeos-dev 
+sudo apt-get -y install postgis postgresql-9.1-postgis-2.0 postgresql-9.1-postgis-2.0-scripts
+
+# install and create virtualenv(wrapper)
+sudo pip install virtualenvwrapper
+
+# Add virtualenvwrapper init script to bashrc
+cat >> .bashrc << EOF
+. `which virtualenvwrapper.sh`
+EOF
+
+# init it for the rest of this script
+. `which virtualenvwrapper.sh`
+
+mkvirtualenv next # from here on, working in next virtualenv
 
 # clone NeXT repo
 git clone https://github.com/modilabs/NeXT.git
-
 cd NeXT
-sudo pip install -r requirements.txt
+setvirtualenvproject # set the NeXT dir as the goto dir for next virtualenv
+
+pip install -r requirements.txt
 python setup.py develop
 
+# TODO:  Add DB create/populate to separate script
 # create db
-./drop-and-create.sh next
+# ./drop-and-create.sh next
 
 # load db objects
-./load-sql.sh
+# ./load-sql.sh
 
 # add reference data
-paster import-fixtures development.ini fixtures.yaml
+# paster import-fixtures development.ini fixtures.yaml
 
 wget http://openlayers.org/download/OpenLayers-2.11.zip
 unzip -u OpenLayers-2.11.zip
