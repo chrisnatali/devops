@@ -13,6 +13,10 @@ sudo apt-get update
 sudo apt-get -y install git python-pip python-dev python-virtualenv postgresql-server-dev-9.1 postgresql-contrib r-base libgdal1h libgeos-dev 
 sudo apt-get -y install postgis postgresql-9.1-postgis-2.0 postgresql-9.1-postgis-2.0-scripts
 
+# install sp package in R
+wget http://cran.r-project.org/src/contrib/sp_1.0-11.tar.gz
+sudo R CMD INSTALL sp_1.0-11.tar.gz
+
 # install and create virtualenv(wrapper)
 sudo pip install virtualenvwrapper
 
