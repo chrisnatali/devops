@@ -35,19 +35,11 @@ git clone https://github.com/modilabs/NeXT.git
 cd NeXT
 setvirtualenvproject # set the NeXT dir as the goto dir for next virtualenv
 
+# install more specific project libs within virtualenv
 pip install -r requirements.txt
 python setup.py develop
 
-# TODO:  Add DB create/populate to separate script
-# create db
-# ./drop-and-create.sh next
-
-# load db objects
-# ./load-sql.sh
-
-# add reference data
-# paster import-fixtures development.ini fixtures.yaml
-
+# Setup OpenLayers
 wget http://openlayers.org/download/OpenLayers-2.11.zip
 unzip -u OpenLayers-2.11.zip
 
