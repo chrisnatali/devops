@@ -37,7 +37,7 @@ setvirtualenvproject # set the NeXT dir as the goto dir for next virtualenv
 
 # install more specific project libs within virtualenv
 pip install -r requirements.txt
-python setup.py develop
+python setup.py install
 
 # Setup OpenLayers
 wget http://openlayers.org/download/OpenLayers-2.11.zip
