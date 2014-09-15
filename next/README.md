@@ -5,8 +5,11 @@ This assumes the target server has been setup with Ubuntu 13.04 appropriately
 Running the following commands from the parent folder will setup the target
 server to run NeXT:
 
-# Setup server baseline user with sudo and libs
-ssh <server> USER_NAME='next' USER_PWD='<pwd>' bash -s < bootstrap.sh
+# Setup server baseline with sudo and libs
+ssh <server> bash -s < bootstrap.sh
+
+# Add user
+ssh <server> USER_NAME='next' USER_PWD='<pwd>' bash -s < add_user.sh
 
 # Setup NeXT specific libs/apps
 ssh <server_as_next_user> bash -s < next/bootstrap.sh
