@@ -43,6 +43,9 @@ wait $!
 cd
 
 echo "Setup Sequencer env"
+# delete Sequencer and sequencer conda env
+rm -rf Sequencer
+rm -rm /home/mr/miniconda/envs/sequencer
 git clone https://github.com/SEL-Columbia/Sequencer
 cd Sequencer
 # run in bg because otherwise it exits this process on completion
