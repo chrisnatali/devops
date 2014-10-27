@@ -6,7 +6,7 @@ sudo apt-get -y install autoconf automake libtool make g++ libxml2-dev libgeos-d
 sudo apt-get -y install libgeos++-dev libpq-dev libbz2-dev libproj-dev protobuf-c-compiler
 sudo apt-get -y install libprotobuf-c0-dev lua5.2 liblua5.2-dev
 
-# For osm data sync we use osmosis and osm2pgsql
+# For osm data sync we use osmosis and osm2pgsql and osmconvert (in osmctools)
 # build osm2pgsql to get the latest since apt pkg version doesn't apply data diffs
 git clone https://github.com/openstreetmap/osm2pgsql.git
 cd osm2pgsql
@@ -15,7 +15,7 @@ cd osm2pgsql
 sudo make install
 cd
 
-sudo apt-get install osmosis
+sudo apt-get install osmosis osmctools
 
 # specific to tilestache
 sudo apt-get install -qq gdal-bin memcached python-pip
