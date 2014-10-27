@@ -10,7 +10,7 @@ sed -i 's/www-data/tiles/' /etc/apache2/envvars
 # Configure osm site in apache
 cat - > /etc/apache2/sites-available/tiles << EOF
 <VirtualHost *:80>
-  WSGIScriptAlias /tilestache /home/tiles/TileStache/stash.wsgi
+  WSGIScriptAlias /tilestache /home/tiles/TileStache/stash-gridmaps.wsgi
   DocumentRoot /home/tiles/TileStache/www
 
   ErrorLog /var/log/apache2/error.log
