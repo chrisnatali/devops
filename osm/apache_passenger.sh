@@ -36,10 +36,10 @@ exit
 sudo rm /etc/apache2/sites-enabled/osm.conf
 sudo ln -s /etc/apache2/sites-available/osm.conf /etc/apache2/sites-enabled/osm.conf
 
-# Setup passenger
-# sudo apt-get -y install libcurl4-openssl-dev
-# sudo gem install passenger
-# sudo passenger-install-apache2-module -a
+Setup passenger
+sudo apt-get -y install libcurl4-openssl-dev
+sudo gem install passenger
+sudo passenger-install-apache2-module -a
 
 sudo updatedb
 
