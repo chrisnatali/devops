@@ -5,6 +5,9 @@
 if [ ! -d $HOME/openstreetmap-website ]
 then
   git clone git@github.com:SEL-Columbia/openstreetmap-website.git
+  # checkout big_merge branch temporarily
+  cd openstreetmap-website
+  git checkout big_merge
 fi
 
 # Make the libpgosm shared object lib

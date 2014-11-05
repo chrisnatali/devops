@@ -1,22 +1,29 @@
 #!/bin/bash
+# To be run as osm user
 
 # Install and setup apache + passenger to serve openstreetmap-website
 # First apache2
-apt-get install -y apache2
+sudo apt-get install -y apache2
+
 # Run apache as osm user
-sed -i 's/www-data/osm/' /etc/apache2/envvars
+sudo sed -i 's/www-data/osm/' /etc/apache2/envvars
+
+# install apache module to allow header config
+sudo a2enmod headers
 
 # Configure osm site in apache
-cat - > /etc/apache2/sites-available/osm << EOF
+sudo su
+cat - > /etc/apache2/sites-available/osm.conf << EOF
 <VirtualHost *:80>
-  DocumentRoot /home/osm/openstreetmap-website
+  DocumentRoot /home/osm/openstreetmap-website/public
   RailsEnv production
 
   Header set Access-Control-Allow-Origin "*"
 
-  <Directory /home/user/openstreetmap-website/public>
+  <Directory /home/osm/openstreetmap-website/public>
     Allow from all
     Options -MultiViews
+    Require all granted
   </Directory>
 
   ErrorLog /var/log/apache2/error.log
@@ -24,25 +31,39 @@ cat - > /etc/apache2/sites-available/osm << EOF
   CustomLog /var/log/apache2/access.log combined
 </VirtualHost>
 EOF
+exit 
 
-unlink /etc/apache2/sites-enabled/*
-ln -s /etc/apache2/sites-available/osm /etc/apache2/sites-enabled/osm
+sudo rm /etc/apache2/sites-enabled/osm.conf
+sudo ln -s /etc/apache2/sites-available/osm.conf /etc/apache2/sites-enabled/osm.conf
 
 # Setup passenger
-apt-get -y install libcurl4-openssl-dev
-gem install passenger
-passenger-install-apache2-module -a
+# sudo apt-get -y install libcurl4-openssl-dev
+# sudo gem install passenger
+# sudo passenger-install-apache2-module -a
 
-updatedb
+sudo updatedb
 
-cat - > /etc/apache2/conf.d/passenger << EOF
+sudo su
+cat - > /etc/apache2/conf-available/passenger.conf << EOF
 LoadModule passenger_module `locate mod_passenger.so | head -1`
-PassengerRoot /var/lib/gems/1.9.1/gems/passenger-"`passenger --version | head -1 | awk '{print $4}'`"
+PassengerRoot /var/lib/gems/1.9.1/gems/passenger-`passenger --version | sed -n '1p' | awk '{print $4}'`
 PassengerRuby /usr/bin/ruby1.9.1
 EOF
+exit
+
+sudo rm /etc/apache2/conf-enabled/passenger.conf
+sudo ln -s /etc/apache2/conf-available/passenger.conf /etc/apache2/conf-enabled/passenger.conf
+
 
 # precompile assets (js, etc)
 cd /home/osm/openstreetmap-website/
-bundle exec rake assets:precompile
+RAILS_ENV=production rake assets:precompile
 
-service apache2 restart
+# set the secret key for passenger in the osm users bashrc (only if it's not currently set)
+echo "export SECRET_KEY_BASE=`rake secret`" >> tmp.secret
+sudo su
+grep "SECRET_KEY_BASE" /etc/apache2/envvars || cat tmp.secret >> /etc/apache2/envvars
+exit
+rm tmp.secret
+
+sudo service apache2 restart
