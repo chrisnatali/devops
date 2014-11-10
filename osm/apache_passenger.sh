@@ -11,6 +11,27 @@ sudo sed -i 's/www-data/osm/' /etc/apache2/envvars
 # install apache module to allow header config
 sudo a2enmod headers
 
+# get rid of any existing conf
+sudo rm /etc/apache2/conf-enabled/passenger.conf
+sudo rm /etc/apache2/sites-enabled/osm.conf
+
+# Setup passenger
+sudo apt-get -y install libcurl4-openssl-dev
+sudo gem install passenger
+sudo passenger-install-apache2-module -a
+
+sudo updatedb
+
+sudo su
+cat - > /etc/apache2/conf-available/passenger.conf << EOF
+LoadModule passenger_module `locate mod_passenger.so | head -1`
+PassengerRoot /var/lib/gems/1.9.1/gems/passenger-`passenger --version | sed -n '1p' | awk '{print $4}'`
+PassengerRuby /usr/bin/ruby1.9.1
+EOF
+exit
+
+sudo ln -s /etc/apache2/conf-available/passenger.conf /etc/apache2/conf-enabled/passenger.conf
+
 # Configure osm site in apache
 sudo su
 cat - > /etc/apache2/sites-available/osm.conf << EOF
@@ -33,27 +54,7 @@ cat - > /etc/apache2/sites-available/osm.conf << EOF
 EOF
 exit 
 
-sudo rm /etc/apache2/sites-enabled/osm.conf
 sudo ln -s /etc/apache2/sites-available/osm.conf /etc/apache2/sites-enabled/osm.conf
-
-Setup passenger
-sudo apt-get -y install libcurl4-openssl-dev
-sudo gem install passenger
-sudo passenger-install-apache2-module -a
-
-sudo updatedb
-
-sudo su
-cat - > /etc/apache2/conf-available/passenger.conf << EOF
-LoadModule passenger_module `locate mod_passenger.so | head -1`
-PassengerRoot /var/lib/gems/1.9.1/gems/passenger-`passenger --version | sed -n '1p' | awk '{print $4}'`
-PassengerRuby /usr/bin/ruby1.9.1
-EOF
-exit
-
-sudo rm /etc/apache2/conf-enabled/passenger.conf
-sudo ln -s /etc/apache2/conf-available/passenger.conf /etc/apache2/conf-enabled/passenger.conf
-
 
 # precompile assets (js, etc)
 cd /home/osm/openstreetmap-website/
