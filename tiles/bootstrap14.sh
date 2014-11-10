@@ -4,7 +4,7 @@
 sudo apt-get -y install git curl tmux postgresql-9.3 postgresql-9.3-postgis-2.1 python-dev libgeos-dev
 sudo apt-get -y install autoconf automake libtool make g++ libxml2-dev libgeos-dev
 sudo apt-get -y install libgeos++-dev libpq-dev libbz2-dev libproj-dev protobuf-c-compiler
-sudo apt-get -y install libprotobuf-c0-dev lua5.2 liblua5.2-dev
+sudo apt-get -y install libprotobuf-c0-dev lua5.2 liblua5.2-dev libboost-all-dev
 
 # For osm data sync we use osmosis and osm2pgsql and osmconvert (in osmctools)
 # build osm2pgsql to get the latest since apt pkg version doesn't apply data diffs
