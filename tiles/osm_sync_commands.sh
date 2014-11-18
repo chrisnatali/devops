@@ -4,6 +4,9 @@
 # This example is of a Nigeria extract
 wget http://download.geofabrik.de/africa/nigeria-latest.osm.pbf
 
+# Or extract all data from a rails port api database via osmosis
+osmosis --read-apidb host="x" database="x" user="x" password="x" validateSchemaVersion=no --write-xml file="planet.osm"
+
 # Populate a PostGIS DB with this extract 
 osm2pgsql --database osm_grid --style gridmaps_pgsql.style --slim nigeria-latest.osm.pbf --hstore-all --extra-attributes --cache-strategy sparse --cache 1200M
 
