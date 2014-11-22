@@ -36,9 +36,10 @@ sudo ln -s /etc/apache2/conf-available/passenger.conf /etc/apache2/conf-enabled/
 sudo su
 cat - > /etc/apache2/sites-available/osm.conf << EOF
 <VirtualHost *:80>
+  # ServerName gridmaps.org
   DocumentRoot /home/osm/openstreetmap-website/public
   RailsEnv production
-
+  
   Header set Access-Control-Allow-Origin "*"
 
   <Directory /home/osm/openstreetmap-website/public>

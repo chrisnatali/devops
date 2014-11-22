@@ -12,6 +12,7 @@ sudo sed -i 's/www-data/tiles/' /etc/apache2/envvars
 sudo su
 cat - > /etc/apache2/sites-available/tiles.conf << EOF
 <VirtualHost *:80>
+  #ServerName tiles.server.org
   WSGIScriptAlias /tilestache /home/tiles/TileStache/stash-gridmaps.wsgi
   DocumentRoot /home/tiles/TileStache
 

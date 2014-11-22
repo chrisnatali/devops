@@ -3,7 +3,7 @@
 
 # add .pgpass pwd file to eliminate password prompt for tiles user
 sudo -u tiles -i
-grep "tiles" .pgpass || echo "*:*:*:tiles:tiles" >> .pgpass
+grep "tiles" .pgpass > /dev/null || echo "*:*:*:tiles:tiles" >> .pgpass
 chmod 600 .pgpass
 exit
 
