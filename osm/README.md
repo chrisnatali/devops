@@ -33,7 +33,7 @@ You should now be able to access the site at 0.0.0.0:3000.
 
 Remember, docker containers are "stateless", so any changes made during 
 your session will be lost.  You can extend the image with your own 
-customizations via the docker commit command.  See the 
+customizations via the `docker commit` command.  See the 
 [docker docs](https://docs.docker.com) for more.  
 
 ### VM or Dev machine setup
