@@ -9,10 +9,16 @@ Assuming you have [Docker](docker.com) (or boot2docker) installed and started, y
 a server via the following steps:
 
 1.  Pull the osm-website image from [dockerhub](hub.docker.com):
-    `sudo docker pull cjon/osm-website`
+
+    ```
+    sudo docker pull cjon/osm-website
+    ```
 
 2.  Start the container, exposing port 3000 and dropping into a bash shell:
-    `sudo docker run -ti -p 3000:3000 cjon/osm-website /bin/bash`
+
+    ```
+    sudo docker run -ti -p 3000:3000 cjon/osm-website /bin/bash
+    ```
 
 3.  Start postgres, switch to osm user and start rails:
 
@@ -35,31 +41,53 @@ customizations via the docker commit command.  See the
 Perform the following tasks to setup a VM or Dev box for development.
 
 Assumptions:
+
 * vm_osm is a known host with a blank Ubuntu server installed
 * vm_osm_osm is a host login as the osm user with authorized_key access and ssh agent forwarding enabled
 
+Instructions:
+
 1.  Setup server and osm prereqs:
+
+    ```
     ssh vm_osm bash -s < bootstrap.sh
+    ```
    
 2.  Setup postgres:
+
+    ```
     ssh vm_osm_osm bash -s < osm_pgpass.sh  
     ssh vm_osm bash -s < osm_postgres.sh  
+    ```
     
 3.  Get the openstreetmap-website src fork from SEL github repo:
     (gets archive of repo and unzips it)
+
+    ```
     ssh vm_osm_osm bash -s < osm_site_setup.sh
+    ```
 
 4.  Update configuration (config/application.yml) with appropriate ip address, mail server...
 
 5.  Setup the db, gems and run tests for openstreetmap-website:
+
+    ```
     ssh vm_osm_osm bash -s < osm_post_site_setup.sh 
+    ```
 
 6.  For prod, setup apache + passenger, precompile rails assets ('asset pipeline') and start serving
+
+    ```
     ssh vm_osm_osm bash -s < apache_passenger.sh
+    ```
+
     Then modify /etc/apache2/sites-available/osm.conf with appropriate ServerName value
 
 7.  For setting up cgimap (for faster map api calls):
+
+    ```
     ssh vm_osm_osm bash -s < osm_cgimap.sh
+    ```
     
     You will then need to configure lighttpd, etc  
     See the following github repo for more:
