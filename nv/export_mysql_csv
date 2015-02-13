@@ -1,0 +1,8 @@
+# files will go in mysql dir for the nv_prod db
+for table in {notes,products,products_tags,tags,users}; do mysql -u root -p<pwd> -D nv_prod << EOF; done
+   SELECT * INTO OUTFILE "$HOME/$table.csv"
+   FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
+   LINES TERMINATED BY '\n'
+FROM $table
+EOF
+
