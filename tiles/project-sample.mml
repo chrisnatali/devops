@@ -1,0 +1,135 @@
+{
+  "bounds": [
+    -180,
+    -85.05112877980659,
+    180,
+    85.05112877980659
+  ],
+  "center": [
+    0,
+    0,
+    2
+  ],
+  "format": "png8",
+  "interactivity": false,
+  "minzoom": 0,
+  "maxzoom": 22,
+  "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
+  "Stylesheet": [
+    "style.mss",
+    "power.mss"
+  ],
+  "Layer": [
+    {
+      "geometry": "linestring",
+      "extent": [
+        2.4882309290686844,
+        3.795131483278505,
+        14.96747944251895,
+        15.953164345645272
+      ],
+      "Datasource": {
+        "type": "postgis",
+        "table": "( SELECT * FROM planet_osm_line\n  WHERE highway IN ('motorway', 'primary', 'secondary', 'tertiary', 'service', 'residential')\n) AS roads",
+        "key_field": "osm_id",
+        "geometry_field": "way",
+        "extent_cache": "auto",
+        "extent": "276988.6,422781.37,1666172.19,1799299.57",
+        "host": "localhost",
+        "dbname": "osm_grid",
+        "user": "tiles",
+        "id": "roads",
+        "project": "gridmaps",
+        "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over"
+      },
+      "id": "roads",
+      "class": "line",
+      "srs-name": "900913",
+      "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
+      "advanced": {},
+      "name": "roads"
+    },
+    {
+      "geometry": "linestring",
+      "extent": [
+        2.4882309290686844,
+        3.795131483278505,
+        14.96747944251895,
+        15.953164345645272
+      ],
+      "Datasource": {
+        "type": "postgis",
+        "table": "( SELECT way, CASE WHEN SUBSTR(highway, length(highway)-3, 4) = 'link' THEN substr(highway,0,length(highway)-4) ELSE highway END, name\nFROM planet_osm_line\nWHERE highway IN ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link', 'secondary', 'secondary_link',\n'tertiary', 'tertiary_link', 'residential', 'unclassified', 'road', 'service', 'pedestrian', 'raceway', 'living_street', 'construction', 'proposed')\nAND name IS NOT NULL\n) AS roads_text_name",
+        "key_field": "",
+        "geometry_field": "way",
+        "extent_cache": "auto",
+        "extent": "276988.6,422781.37,1666172.19,1799299.57",
+        "host": "localhost",
+        "user": "tiles",
+        "dbname": "osm_grid"
+      },
+      "id": "roads-text-name",
+      "class": "line",
+      "srs-name": "900913",
+      "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
+      "advanced": {},
+      "name": "roads-text-name"
+    },
+    {
+      "geometry": "linestring",
+      "extent": [
+        2.4882309290686844,
+        3.795131483278505,
+        14.96747944251895,
+        15.953164345645272
+      ],
+      "Datasource": {
+        "type": "postgis",
+        "table": "( SELECT way, power\nFROM planet_osm_line\nWHERE power is not null\n) AS power_lines",
+        "key_field": "",
+        "geometry_field": "way",
+        "extent_cache": "auto",
+        "extent": "276988.6,422781.37,1666172.19,1799299.57",
+        "host": "localhost",
+        "user": "tiles",
+        "dbname": "osm_grid"
+      },
+      "id": "power",
+      "class": "line",
+      "srs-name": "900913",
+      "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
+      "advanced": {},
+      "name": "power"
+    },
+    {
+      "geometry": "point",
+      "extent": [
+        2.4882309290686844,
+        3.795131483278505,
+        14.96747944251895,
+        15.953164345645272
+      ],
+      "Datasource": {
+        "type": "postgis",
+        "table": "( SELECT way, power\nFROM planet_osm_point\nWHERE power is not null\n) AS power_points",
+        "key_field": "",
+        "geometry_field": "way",
+        "extent_cache": "auto",
+        "extent": "276988.6,422781.37,1666172.19,1799299.57",
+        "host": "localhost",
+        "user": "tiles",
+        "dbname": "osm_grid"
+      },
+      "id": "power_node",
+      "class": "point",
+      "srs-name": "900913",
+      "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
+      "advanced": {},
+      "name": "power_node"
+    }
+  ],
+  "scale": 1,
+  "metatile": 2,
+  "name": "gridmaps",
+  "description": ""
+}
