@@ -1,17 +1,42 @@
 #!/bin/bash
-# add user and set grant sudo access
+# Adds RUN_USER and adds AUTHORIZED_KEYS for that user if vars are set
 
-# Do everything as root (preserve env vars via -E)
-sudo -E su
+function add_auth_keys {
+    local auth_keys="$1"
+    local auth_user="$2"
+    
+    local ssh_dir=/home/$auth_user/.ssh
+    if [[ $auth_user == "root" ]]; then
+        ssh_dir=/root/.ssh
+    fi
 
-if [ -z $USER_NAME ]; then echo "Need to set USER_NAME"; fi
-if [ -z $USER_PWD ]; then echo "Need to set USER_PWD"; fi
+    echo "=> Adding authorized keys $auth_keys for $auth_user"
+    mkdir -p $ssh_dir
+    chmod 700 $ssh_dir 
+    touch $ssh_dir/authorized_keys
+    chmod 600 $ssh_dir/authorized_keys
+    chown -R $auth_user:$auth_user $ssh_dir
+    IFS=$'\n'
+    arr=$(echo ${auth_keys} | tr "," "\n")
+    for x in $arr
+    do
+        x=$(echo $x | sed -e 's/^ *//' -e 's/ *$//')
+        cat $ssh_dir/authorized_keys | grep "$x" >/dev/null 2>&1
+        if [ $? -ne 0 ]; then
+            echo "=> Adding public key to .ssh/authorized_keys: $x"
+            echo "$x" >> $ssh_dir/authorized_keys
+        fi
+    done
+}
 
-# add user (change pwd as needed)
-if ! id -u $USER_NAME > /dev/null
-then
-    echo "adding user..."
-    useradd -p $(perl -e'print crypt("'$USER_PWD'", "aa")') -s "/bin/bash" -U -m -G sudo $USER_NAME
-else
-    echo "user already exists"
+if [ ${RUN_USER} ]; then
+    echo "=> Adding user $RUN_USER"
+    useradd -s /bin/bash -m -G sudo $RUN_USER 
+fi
+ 
+# setup authorized keys for ssh access
+if [ "${AUTHORIZED_KEYS}" ]; then
+    add_auth_keys "${AUTHORIZED_KEYS}" "${RUN_USER}"
+    # NOTE:  Adding to root as well
+    add_auth_keys "${AUTHORIZED_KEYS}" root
 fi
