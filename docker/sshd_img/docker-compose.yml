@@ -1,8 +1,11 @@
+# Compose file to run an ssh enabled server to test ssh based deployments
+# Replace 'RUN_USER' and 'YOUR_PUBLIC_KEY' with a user and public key
+# you wish to connect as/with
 server:
     image: "cjon/sshd:0.1"
     environment:
         RUN_USER: 'mr'
         AUTHORIZED_KEYS: 'YOUR_PUBLIC_KEY'
     volumes:
-      - ./init-docker.sh:/init-docker.sh
-    command:  /init-docker.sh
+      - ./user_ssh.sh:/user_ssh.sh
+    command:  /user_ssh.sh
