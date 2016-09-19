@@ -32,6 +32,8 @@ function add_auth_keys {
 if [ ${RUN_USER} ]; then
     echo "=> Adding user $RUN_USER"
     useradd -s /bin/bash -m -G sudo $RUN_USER 
+    # http://unix.stackexchange.com/a/193131 
+    usermod -p '*' $RUN_USER
 fi
  
 # setup authorized keys for ssh access
